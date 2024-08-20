@@ -1,5 +1,13 @@
 import User from "../models/users.js";
 import bcrypt from "bcrypt";
+import { createToken } from "../services/jwt.js";
+
+// Método de prueba de usuario
+export const testUser = (req, res) => {
+  return res.status(200).send({
+    message: "Mensaje enviado desde el controlador user.js"
+  });
+}
 
 // Método Registro de Usuarios
 export const register = async (req, res) => {
@@ -17,6 +25,7 @@ export const register = async (req, res) => {
 
     // Crear el objeto de usuario con los datos que ya validamos
     let user_to_save = new User(params);
+    user_to_save.email = params.email.toLowerCase();
 
     // Busca si ya existe un usuario con el mismo email o nick
     const existingUser = await User.findOne({
@@ -46,10 +55,8 @@ export const register = async (req, res) => {
     return res.status(200).json({
       status: "success",
       message: "Registro de usuario exitoso",
-      params,
       user_to_save
     });
-
 
   } catch (error) {
     // Manejo de errores
@@ -58,6 +65,72 @@ export const register = async (req, res) => {
     return res.status(500).send({
       status: "error",
       message: "Error en el registro de usuario"
+    });
+  }
+}
+
+// Método de autenticación de usuarios (login) usando JWT
+export const login = async (req, res) => {
+  try {
+    // Obtener los parámetros del body
+    let params = req.body;
+
+    // Validar parámetros: email, password
+    if (!params.email || !params.password) {
+      return res.status(400).send({
+        status: "error",
+        message: "Faltan datos por enviar"
+      });
+    }
+
+    // Buscar en la BD si existe el email recibido
+    const user = await User.findOne({ email: params.email.toLowerCase() });
+
+    // Si no existe el usuario
+    if(!user) {
+      return res.status(404).send({
+        status: "error",
+        message: "Usuario no encontrado"
+      });
+    }
+
+    // Comprobar al contraseña
+    const validPassword = await bcrypt.compare(params.password, user.password);
+
+    // Si la contraseña es incorrecta
+    if(!validPassword) {
+      return res.status(401).send({
+        status: "error",
+        message: "Contraseña incorrecta"
+      });
+    }
+
+    // Generar token de autenticación
+    const token = createToken(user);
+
+    // Devolver Token y datos del usuario autenticado
+    return res.status(200).json({
+      status: "success",
+      message: "Login exitoso",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        last_name: user.last_name,
+        email: user.email,
+        nick: user.nick,
+        image: user.image,
+        created_at: user.created_at
+      }
+    });
+
+  } catch (error) {
+    // Manejo de errores
+    console.log("Error en la autenticación del usuario:", error);
+    // Devuelve mensaje de error
+    return res.status(500).send({
+      status: "error",
+      message: "Error en la autenticación del usuario"
     });
   }
 }
