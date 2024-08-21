@@ -8,6 +8,7 @@ const secret = 'SECRET_KEY_pRoJeCt_Socail_Network_';
 const createToken = (user) => {
   const payload = {
     userId: user._id,
+    name: user.name,  // quitar para el despliegue
     role: user.role,
     // Fecha de emisión
     iat: moment().unix(),

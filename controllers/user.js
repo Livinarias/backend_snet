@@ -5,7 +5,8 @@ import { createToken } from "../services/jwt.js";
 // Método de prueba de usuario
 export const testUser = (req, res) => {
   return res.status(200).send({
-    message: "Mensaje enviado desde el controlador user.js"
+    message: "Mensaje enviado desde el controlador user.js",
+    user: req.user
   });
 }
 
