@@ -240,7 +240,7 @@ export const uploadMedia = async (req, res) => {
     // Verificar si el archivo realmente existe antes de proceder
     const actualFilePath  = path.resolve("./uploads/publications/", req.file.filename);
     try {
-      fs.statSync(actualFilePath); 
+      fs.statSync(actualFilePath);
     } catch (error) {
       return res.status(404).send({
         status: "error",
@@ -248,7 +248,7 @@ export const uploadMedia = async (req, res) => {
       });
     }
 
-    // Si todo es correcto, se procede a guardar en la BD
+    // Si todo es correcto, se guarda en la BD
     const publicationUpdated = await Publication.findOneAndUpdate(
       { user_id: req.user.userId, _id: publicationId },
       { file: req.file.filename },
@@ -285,7 +285,7 @@ export const showMedia = async (req, res) => {
     const file = req.params.file;
 
     // Crear el path real de la imagen
-    const filePath = "./uploads/publications/" + file;
+    const filePath = `./uploads/publications/${file}`;
 
     // Comprobar si existe el archivo
     fs.stat(filePath, (error, exists) => {

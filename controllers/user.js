@@ -380,7 +380,7 @@ export const avatar = async (req, res) => {
     const file = req.params.file;
 
     // Configurando el path real de la imagen que queremos mostrar
-    const filePath = "./uploads/avatars/" + file;
+    const filePath = `./uploads/avatars/${file}`;
 
     // Comprobar que si existe el filePath
     fs.stat(filePath, (error, exists) => {
