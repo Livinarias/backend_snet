@@ -41,7 +41,7 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos:
 
 Para ejecutar el servidor de Node, en la terminal escribe:
     ```
-    npm install
+    npm run start:watch
     ```
 
 > [!IMPORTANT]
