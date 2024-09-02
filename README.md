@@ -24,13 +24,13 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos:
     MONGODB_URI=aquí_el_string_de_conexión_a_Mongo_Atlas_sin_comillas_sin_espacios
     SECRET_KEY=aquí_la_clave_secreta_para_generar_el_token_de_autenticación_con_JWT
     PORT=####
-    `
+    ```
     Ejemplo:
     ```bash
     MONGODB_URI=mongodb+srv://tu_usuario_mongo_atlas_cloud:tu_password@tu_cluster.configuración_de_mongo.mongodb.net/tu_nombre_bd?retryWrites=true&w=majority
     SECRET_KEY=SECRET_KEY_oTrOs_cArAcTeReS_CLAVE
     PORT=3900
-    `
+    ```
 
 4. Instala las dependencias del proyecto utilizando npm:
 
@@ -43,7 +43,7 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos:
 Para ejecutar el servidor de Node, en la terminal escribe:
 
     ```bash
-    npm run start:watch
+    npm install
     ```
 
 > [!IMPORTANT]
