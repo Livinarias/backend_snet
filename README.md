@@ -28,7 +28,7 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos:
     Ejemplo:
     ```bash
     MONGODB_URI=mongodb+srv://tu_usuario_mongo_atlas_cloud:tu_password@tu_cluster.configuración_de_mongo.mongodb.net/tu_nombre_bd?retryWrites=true&w=majority
-    SECRET_KEY=SECRET_KEY_oTrOs_cArAcTeReS_CLAVE&&
+    SECRET_KEY=SECRET_KEY_oTrOs_cArAcTeReS_CLAVE
     PORT=3900
     `
 
