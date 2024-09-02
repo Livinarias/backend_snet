@@ -33,7 +33,6 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos:
     ```
 
 4. Instala las dependencias del proyecto utilizando npm:
-
     ```bash
     npm install
     ```
@@ -41,7 +40,6 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos:
 ## Ejecución de Node
 
 Para ejecutar el servidor de Node, en la terminal escribe:
-
     ```bash
     npm install
     ```
