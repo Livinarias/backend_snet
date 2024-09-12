@@ -287,7 +287,7 @@ export const updateUser = async (req, res) => {
 
     // Devolver la respuesta exitosa
     return res.status(200).send({
-      status: "sucess",
+      status: "success",
       message: "Usuario actualizado correctamente",
       user: userUpdated
     });
