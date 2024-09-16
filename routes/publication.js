@@ -25,7 +25,6 @@ const uploads = multer({
 });
 
 // Definir las rutas
-router.get('/test-publication', testPublication);
 router.post('/new-publication', ensureAuth, savePublication);
 router.get('/show-publication/:id', ensureAuth, showPublication);
 router.delete('/delete-publication/:id', ensureAuth, deletePublication);
