@@ -9,6 +9,11 @@ import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+// Obtener __dirname en un entorno ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 // Crear directorios si no existen
 const avatarsDir = path.join(__dirname, 'uploads', 'avatars');
 const publicationsDir = path.join(__dirname, 'uploads', 'publications');
@@ -49,9 +54,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/user', UserRoutes);
 app.use('/api/publication', PublicationRoutes);
 app.use('/api/follow', FollowRoutes);
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 // Configuración para servir archivos estáticos (imágenes de avatar)
 app.use('/uploads/avatars', express.static(path.join(__dirname, 'uploads', 'avatars')));
