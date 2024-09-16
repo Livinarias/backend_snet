@@ -68,7 +68,7 @@ export const showPublication = async (req, res) => {
       });
     }
 
-    // Devolver respuesta exitosa 
+    // Devolver respuesta exitosa
     return res.status(200).json({
       status: "success",
       message: "Publicación encontrada",
