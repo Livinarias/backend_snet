@@ -9,6 +9,19 @@ import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+// Crear directorios si no existen
+const avatarsDir = path.join(__dirname, 'uploads', 'avatars');
+const publicationsDir = path.join(__dirname, 'uploads', 'publications');
+
+if (!fs.existsSync(avatarsDir)) {
+  fs.mkdirSync(avatarsDir, { recursive: true });
+  console.log('Directorio avatars creado');
+}
+
+if (!fs.existsSync(publicationsDir)) {
+  fs.mkdirSync(publicationsDir, { recursive: true });
+  console.log('Directorio publications creado');
+}
 
 // Mensaje de bienvenida para verificar que ejecutó bien la API de Node
 console.log("API Node en ejecución");
