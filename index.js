@@ -5,29 +5,17 @@ import cors from "cors";
 import UserRoutes from "./routes/user.js";
 import PublicationRoutes from "./routes/publication.js";
 import FollowRoutes from "./routes/follow.js";
-import fs from 'fs';
-import path from 'path';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import dotenv from "dotenv";
+import { v2 as cloudinary } from 'cloudinary';
 
-// Obtener __dirname en un entorno ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+dotenv.config();
 
-
-// Crear directorios si no existen
-const avatarsDir = path.join(__dirname, 'uploads', 'avatars');
-const publicationsDir = path.join(__dirname, 'uploads', 'publications');
-
-if (!fs.existsSync(avatarsDir)) {
-  fs.mkdirSync(avatarsDir, { recursive: true });
-  console.log('Directorio avatars creado');
-}
-
-if (!fs.existsSync(publicationsDir)) {
-  fs.mkdirSync(publicationsDir, { recursive: true });
-  console.log('Directorio publications creado');
-}
+// Configurar Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 // Mensaje de bienvenida para verificar que ejecutó bien la API de Node
 console.log("API Node en ejecución");
@@ -55,12 +43,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/user', UserRoutes);
 app.use('/api/publication', PublicationRoutes);
 app.use('/api/follow', FollowRoutes);
-
-// Configuración para servir archivos estáticos (imágenes de avatar)
-app.use('/uploads/avatars', express.static(path.join(__dirname, 'uploads', 'avatars')));
-
-// Configuración para servir archivos estáticos (imágenes de publicaciones)
-app.use('/uploads/publications', express.static(path.join(__dirname, 'uploads', 'publications')));
 
 // Configurar el servidor Node
 app.listen(puerto, () => {

@@ -3,9 +3,7 @@ import Follow from "../models/follows.js";
 import Publication from "../models/publications.js";
 import bcrypt from "bcrypt";
 import { createToken } from "../services/jwt.js";
-import fs from "fs";
-import path from "path";
-import { followThisUser} from "../services/followServices.js"
+import { followThisUser } from "../services/followServices.js"
 
 // Método de prueba de usuario
 export const testUser = (req, res) => {
@@ -304,51 +302,22 @@ export const updateUser = async (req, res) => {
 // Método para subir AVATAR (imagen de perfil) y actualizar el campo image del User
 export const uploadAvatar = async (req, res) => {
   try {
-    // Obtener el archivo de la imagen y comprobar si existe
+    // Verificar si se ha subido un archivo
     if(!req.file){
-      return res.status(404).send({
+      return res.status(400).send({
         status: "error",
         message: "Error la petición no incluye la imagen"
       });
     }
 
-    // Obtener el nombre del archivo
-    let image = req.file.originalname;
-
-    // Obtener la extensión del archivo
-    const imageSplit = image.split(".");
-    const extension = imageSplit[imageSplit.length -1];
-
-    // Validar la extensión
-    if (!["png", "jpg", "jpeg", "gif"].includes(extension.toLowerCase())){
-      //Borrar archivo subido
-      const filePath = req.file.path;
-      fs.unlinkSync(filePath);
-
-      return res.status(404).send({
-        status: "error",
-        message: "Extensión del archivo inválida. Solo se permite: png, jpg, jpeg, gif"
-      });
-    }
-    // Comprobar tamaño del archivo (pj: máximo 1MB)
-    const fileSize = req.file.size;
-    const maxFileSize = 1 * 1024 * 1024; // 1 MB
-
-    if (fileSize > maxFileSize) {
-      const filePath = req.file.path;
-      fs.unlinkSync(filePath);
-
-      return res.status(400).send({
-        status: "error",
-        message: "El tamaño del archivo excede el límite (máx 1 MB)"
-      });
-    }
+    // Obtener la URL del archivo subido a Cloudinary
+    const avatarUrl = req.file.path; // Esta propiedad contiene la URL de Cloudinary
 
     // Guardar la imagen en la BD
-    const userUpdated = await User.findOneAndUpdate(
-      {_id: req.user.userId},
-      { image: req.file.filename },
-      { new: true}
+    const userUpdated = await User.findByIdAndUpdate(
+      req.user.userId,
+      { image: avatarUrl },
+      { new: true }
     );
 
     // verificar si la actualización fue exitosa
@@ -363,7 +332,7 @@ export const uploadAvatar = async (req, res) => {
     return res.status(200).json({
       status: "success",
       user: userUpdated,
-      file: req.file
+      file: avatarUrl
     });
 
   } catch (error) {
@@ -379,22 +348,23 @@ export const uploadAvatar = async (req, res) => {
 export const avatar = async (req, res) => {
   try {
     // Obtener el parámetro del archivo desde la url
-    const file = req.params.file;
+    const userId = req.params.file;
 
-    // Configurando el path real de la imagen que queremos mostrar
-    const filePath = `./uploads/avatars/${file}`;
+    // Buscar al usuario en la base de datos para obtener la URL de Cloudinary
+    const user = await User.findById(userId).select('image');
 
-    // Comprobar que si existe el filePath
-    fs.stat(filePath, (error, exists) => {
-      if(!filePath) {
-        return res.status(404).send({
-          status: "error",
-          message: "No existe la imagen"
-        });
-      }
+    // Verificar si el usuario existe y tiene una imagen
+    if (!user || !user.image) {
+      return res.status(404).send({
+        status: "error",
+        message: "No existe la imagen o el usuario"
+      });
+    }
 
-      // Devolver el file
-      return res.sendFile(path.resolve(filePath));
+    // Devolver la URL de la imagen desde Cloudinary
+    return res.status(200).json({
+      status: "success",
+      imageUrl: user.image // URL de Cloudinary almacenada en la BD
     });
 
   } catch (error) {

@@ -16,7 +16,7 @@ const createToken = (user) => {
     role: user.role,
     // Fecha de emisión
     iat: moment().unix(),
-    exp: moment().add(30, 'days').unix()
+    exp: moment().add(7, 'days').unix()
   };
 
   // Devolver jwt_token codificado
