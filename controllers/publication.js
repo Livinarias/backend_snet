@@ -4,14 +4,6 @@ import path from "path";
 import { followUserIds } from "../services/followServices.js"
 import { v2 as cloudinary } from 'cloudinary';
 
-
-// Método de prueba
-export const testPublication = (req, res) => {
-  return res.status(200).send({
-    message: "Mensaje enviado desde el controlador publication.js"
-  });
-}
-
 // Método para hacer una publicación
 export const savePublication = async (req, res) => {
   try {
@@ -44,8 +36,8 @@ export const savePublication = async (req, res) => {
       });
     }
 
-    // Devolver respuesta exitosa 
-    return res.status(200).send({
+    // Devolver respuesta exitosa
+    return res.status(200).json({
       status: "success",
       message: "¡Publicación creada con éxito!",
       publicationStored
@@ -80,7 +72,7 @@ export const showPublication = async (req, res) => {
     }
 
     // Devolver respuesta exitosa 
-    return res.status(200).send({
+    return res.status(200).json({
       status: "success",
       message: "Publicación encontrada",
       publication: publicationStored
@@ -113,7 +105,7 @@ export const deletePublication = async (req, res) => {
     }
 
     // Devolver respuesta exitosa
-    return res.status(200).send({
+    return res.status(200).json({
       status: "success",
       message: "Publicación eliminada con éxito",
       publication: publicationDeleted
@@ -149,7 +141,7 @@ export const publicationsUser = async (req, res) => {
         path: 'user_id',
         select: '-password -role -__v -email'
       },
-      lean: true
+      lean: true  // Hace que la consulta retorne objetos JS puros, en vez de documentos Mongoose
     };
 
     // Buscar las publicaciones del usuario
@@ -163,7 +155,7 @@ export const publicationsUser = async (req, res) => {
     }
 
     // Devolver respuesta exitosa
-    return res.status(200).send({
+    return res.status(200).json({
       status: "success",
       message: "Publicaciones del usuario: ",
       publications: publications.docs,
@@ -232,7 +224,7 @@ export const uploadMedia = async (req, res) => {
     }
 
     // Devolver respuesta exitosa
-    return res.status(200).send({
+    return res.status(200).json({
       status: "success",
       message: "Archivo subido con éxito",
       publication: publicationUpdated,
@@ -335,7 +327,7 @@ export const feed = async (req, res) => {
     }
 
     // Devolver respuesta exitosa
-    return res.status(200).send({
+    return res.status(200).json({
       status: "success",
       message: "Feed de Publicaciones",
       publications: result.docs,
