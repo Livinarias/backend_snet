@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { testPublication, savePublication, showPublication, deletePublication, publicationsUser, uploadMedia, showMedia, feed } from "../controllers/publication.js";
+import { savePublication, showPublication, deletePublication, publicationsUser, uploadMedia, showMedia, feed } from "../controllers/publication.js";
 import { ensureAuth } from "../middlewares/auth.js";
 import multer from "multer";
 import Publication from "../models/publications.js"

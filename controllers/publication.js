@@ -1,8 +1,5 @@
 import Publication from "../models/publications.js"
-import fs from "fs";
-import path from "path";
 import { followUserIds } from "../services/followServices.js"
-import { v2 as cloudinary } from 'cloudinary';
 
 // Método para hacer una publicación
 export const savePublication = async (req, res) => {
